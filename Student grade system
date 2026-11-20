@@ -1,0 +1,112 @@
+
+students = {}
+
+def add_student():
+    roll = input("Enter Roll Number: ")
+    name = input("Enter Student Name: ")
+
+    subjects = {}
+    n = int(input("Enter number of subjects: "))
+
+    for i in range(n):
+        subject = input("Enter Subject Name: ")
+        marks = float(input("Enter Marks (0-100): "))
+        subjects[subject] = marks
+
+    students[roll] = {"name": name, "subjects": subjects}
+    print("Student added successfully!")
+
+
+def view_student():
+    roll = input("Enter Roll Number: ")
+
+    if roll in students:
+        student = students[roll]
+        print("\nStudent Name:", student["name"])
+        print("Roll Number:", roll)
+
+        total = sum(student["subjects"].values())
+        count = len(student["subjects"])
+        percentage = total / count
+
+        for subject, marks in student["subjects"].items():
+            print(subject, ":", marks)
+
+        if percentage >= 90:
+            grade = "A+"
+        elif percentage >= 80:
+            grade = "A"
+        elif percentage >= 70:
+            grade = "B"
+        elif percentage >= 60:
+            grade = "C"
+        elif percentage >= 50:
+            grade = "D"
+        else:
+            grade = "F"
+
+        print("Total Marks:", total)
+        print("Percentage:", round(percentage, 2), "%")
+        print("Grade:", grade)
+    else:
+        print("Student not found!")
+
+
+def update_student():
+    roll = input("Enter Roll Number: ")
+
+    if roll in students:
+        for subject in students[roll]["subjects"]:
+            marks = float(input("Enter new marks for " + subject + ": "))
+            students[roll]["subjects"][subject] = marks
+        print("Student details updated!")
+    else:
+        print("Student not found!")
+
+
+def search_student():
+    roll = input("Enter Roll Number: ")
+
+    if roll in students:
+        print("Student Found:", students[roll]["name"])
+    else:
+        print("Student not found!")
+
+
+def performance_summary():
+    if not students:
+        print("No student records available!")
+        return
+
+    for roll, student in students.items():
+        marks = student["subjects"].values()
+        percentage = sum(marks) / len(marks)
+        print(student["name"], "-", round(percentage, 2), "%")
+
+
+while True:
+    print("\n===== STUDENT RESULT MANAGEMENT =====")
+    print("1. Add Student")
+    print("2. Update Student")
+    print("3. Search Student")
+    print("4. View Student Result")
+    print("5. Performance Summary")
+    print("6. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        add_student()
+    elif choice == "2":
+        update_student()
+    elif choice == "3":
+        search_student()
+    elif choice == "4":
+        view_student()
+    elif choice == "5":
+        performance_summary()
+    elif choice == "6":
+        print("Thank you!")
+        break
+    else:
+        print("Invalid choice! Try again.")
